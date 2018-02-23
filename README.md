@@ -1,4 +1,4 @@
 # DjangoImage
 
-Image get and post request working
+Image get and post request working<br>
 taking image and processing and returning the detailed score of each alphabet
