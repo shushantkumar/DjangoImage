@@ -19,7 +19,11 @@ def imageClassify(serializer):
 	os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 	#image_path = '..\..\media\p1.jpg'
-	phot = Stock.objects.get(name="valak")
+	image_name=serializer.data['name']
+
+	phot = Stock.objects.get(name=image_name)
+	
+	#print(image_name)
 	#image_path = '..\..\media\p1.jpg'
 	image_path= phot.image.path
 	#image_path="http://localhost:8000/media/p7.jpg"
@@ -27,6 +31,7 @@ def imageClassify(serializer):
 	# label_lines = [line.rstrip() for line
 	#                    in tf.gfile.GFile("logs/output_labels.txt")]
 	print(image_path)
+	
 	main_path=image_path[:(len(image_path)-len(phot.image.name))]
 	
 	log_path = main_path+"logs\output_labels.txt"
