@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Stock
 from .serializers import StockSerializer  
+import json
 
 # Create your views here.
 
@@ -30,18 +31,18 @@ def imageClassify(serializer):
 	image_data = tf.gfile.FastGFile(image_path, 'rb').read()
 	# label_lines = [line.rstrip() for line
 	#                    in tf.gfile.GFile("logs/output_labels.txt")]
-	print(image_path)
+	#print(image_path)
 	
 	main_path=image_path[:(len(image_path)-len(phot.image.name))]
 	
 	log_path = main_path+"logs\output_labels.txt"
-	print(log_path)
+	#print(log_path)
 	label_lines = [line.rstrip() for line
 	                   in tf.gfile.GFile(log_path)]
 
 	# Unpersists graph from file
 	graph_path = main_path + "logs\output_graph.pb"
-	print(graph_path)
+	#print(graph_path)
 	with tf.gfile.FastGFile(graph_path, 'rb') as f:
 	    graph_def = tf.GraphDef()
 	    graph_def.ParseFromString(f.read())
@@ -65,14 +66,6 @@ def imageClassify(serializer):
 
 	return result
 
-		
-
-
-
-
-	
-
-
 
 class StockList(APIView):
 
@@ -91,9 +84,11 @@ class StockList(APIView):
 			serializer.save()
 			#console.log(score)
 			requ = imageClassify(serializer)
-			
-
-			
+			#requ = json.dumps(requ)
+			img_name = serializer.data['name']
+			snippet = Stock.objects.get(name= img_name)
+			# comment below line to store the posted image 
+			snippet.delete()
 
 			return Response(requ, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
