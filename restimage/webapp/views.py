@@ -20,13 +20,17 @@ def imageClassify(serializer):
 	os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 	#image_path = '..\..\media\p1.jpg'
-	image_name=serializer.data['name']
+	image_name=serializer.data['id']
+	# image_file=serializer.data['image']
+	# print(image_file)
 
-	phot = Stock.objects.get(name=image_name)
-	
+	phot = Stock.objects.get(id=image_name)
+	#phot = Stock.objects.get(name='A3')
 	#print(image_name)
-	#image_path = '..\..\media\p1.jpg'
+
 	image_path= phot.image.path
+	#image_path= "C:\Users\Shushant Kumar\Documents\GitHub\DjangoImage\media_cdn\A3.jpg"
+	print(image_path)
 	#image_path="http://localhost:8000/media/p7.jpg"
 	image_data = tf.gfile.FastGFile(image_path, 'rb').read()
 	# label_lines = [line.rstrip() for line
@@ -82,14 +86,15 @@ class StockList(APIView):
 		
 		if serializer.is_valid():
 			serializer.save()
+
 			#console.log(score)
 			requ = imageClassify(serializer)
 			#requ = json.dumps(requ)
-			img_name = serializer.data['name']
-			snippet = Stock.objects.get(name= img_name)
-			# comment below line to store the posted image 
-			snippet.delete()
 
+			img_name = serializer.data['id']
+			snippet = Stock.objects.get(id= img_name)
+			# comment below line to store the posted imageClassify 
+			snippet.delete()
 			return Response(requ, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
