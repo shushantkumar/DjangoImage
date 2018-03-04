@@ -25,7 +25,7 @@ SECRET_KEY = 'ou+ugu_4a#hsz&chv!++rzz!@@e39-4$aktm%s-$on-9lc60=z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.100.2.142']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webapp',
     'rest_framework',
+    'videoapp'
 ]
 
 MIDDLEWARE = [
