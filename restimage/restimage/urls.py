@@ -16,15 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.urls import path
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.conf.urls.static import static
 from rest_framework.urlpatterns import format_suffix_patterns
-from webapp import views
+from webapp import view
+from videoapp import views
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^stocks/', views.StockList.as_view()),
+    url(r'^stocks/', view.StockList.as_view()),
+    url(r'^video/',views.VideoSignList.as_view()) 
 ]
 
 #urlpatterns = format_suffix_patterns(urlpatterns)
