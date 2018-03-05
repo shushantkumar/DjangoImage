@@ -99,7 +99,7 @@ def videoClassify(serializer):
 	            i += 1
 	            k = float(score)
 	            z = res.upper()
-	            local = {z:k}
+	            local = { z:k }
 	            result.update(local)
 	            # cv2.putText(img, '%s' % (res.upper()), (100,400), cv2.FONT_HERSHEY_SIMPLEX, 4, (255,255,255), 4)
 	            # cv2.putText(img, '(score = %.5f)' % (float(score)), (100,450), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,255,255))
