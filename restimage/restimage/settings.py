@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webapp',
     'rest_framework',
-    'videoapp'
+    'videoapp',
+    'streamapp'
 ]
 
 MIDDLEWARE = [
