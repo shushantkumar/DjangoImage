@@ -22,7 +22,7 @@ def predict(sess,softmax_tensor,label_lines,image_data):
 
     predictions = sess.run(softmax_tensor, \
              {'DecodeJpeg/contents:0': image_data})
-
+#image_path= "C:\Users\Shushant Kumar\Documents\GitHub\DjangoImage\media_cdn\A3.jpg"
     # Sort to show labels of first prediction in order of confidence
     top_k = predictions[0].argsort()[-len(predictions[0]):][::-1]
 

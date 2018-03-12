@@ -12,43 +12,51 @@ import json
 import tensorflow as tf
 import sys
 import os
+import cv2
+import numpy
 # Disable tensorflow compilation warnings
 
-def imageClassify(serializer):
+def imageClassify(request):
 	os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
-	#image_path = '..\..\media\p1.jpg'
-	image_name=serializer.data['id']
-	# image_file=serializer.data['image']
-	# print(image_file)
+	# #image_path = '..\..\media\p1.jpg'
+	# image_name=serializer.data['id']
+	# # image_file=serializer.data['image']
+	# # print(image_file)
 
-	phot = VideoStream.objects.get(id=image_name)
-	#phot = VideoStream.objects.get(name='A3')
-	#print(image_name)
+	# phot = Stock.objects.get(id=image_name)
+	# #phot = Stock.objects.get(name='A3')
+	# #print(image_name)
 
-	image_path= phot.video.path
-	#image_path= "C:\Users\Shushant Kumar\Documents\GitHub\DjangoImage\media_cdn\A3.jpg"
-	print(image_path)
+	# image_path= phot.image.path
+	# image_path= "C:\Users\Shushant Kumar\Documents\GitHub\DjangoImage\media_cdn"
+	# print(image_path)
 	#image_path="http://localhost:8000/media/p7.jpg"
-	image_data = tf.gfile.FastGFile(image_path, 'rb').read()
+	# image_data = tf.gfile.FastGFile(image_path, 'rb').read()
+	print("here1")
+	image_data = request
+	print("here2")
 	# label_lines = [line.rstrip() for line
 	#                    in tf.gfile.GFile("logs/output_labels.txt")]
 	#print(image_path)
 	
-	main_path=image_path[:(len(image_path)-len(phot.video.name))]
+	# main_path=image_path[:(len(image_path)-len(phot.image.name))]
 	
-	log_path = main_path+"logs\output_labels.txt"
+	log_path = "C:\\Users\\Shushant Kumar\\Documents\\GitHub\\DjangoImage\\media_cdn\\logs\\output_labels.txt"
 	#print(log_path)
 	label_lines = [line.rstrip() for line
 	                   in tf.gfile.GFile(log_path)]
+	print("here3")
 
 	# Unpersists graph from file
-	graph_path = main_path + "logs\output_graph.pb"
+	graph_path = "C:\\Users\\Shushant Kumar\\Documents\\GitHub\\DjangoImage\\media_cdn\\logs\\output_graph.pb"
 	#print(graph_path)
 	with tf.gfile.FastGFile(graph_path, 'rb') as f:
 	    graph_def = tf.GraphDef()
 	    graph_def.ParseFromString(f.read())
 	    _ = tf.import_graph_def(graph_def, name='')
+
+	print("here4")
 
 	with tf.Session() as sess:
 	    # Feed the image_data as input to the graph and get first prediction
@@ -71,27 +79,32 @@ def imageClassify(serializer):
 
 class StreamList(APIView):
 
-	def get(self,request):
-		stocks = VideoStream.objects.all() 
-		serializer = VideoStreamSerializer(stocks, many = True)
-		return Response(serializer.data)
+	# def get(self,request):
+	# 	stocks = VideoStream.objects.all() 
+	# 	serializer = VideoStreamSerializer(stocks, many = True)
+	# 	return Response(serializer.data)
 
 		
 
 	def post(self,request):
-		serializer = VideoStreamSerializer(data=request.data)
+		print(request)
+		# print(request.file)
+		requ = imageClassify(request)
+		# print(request.data)
+		# return Response("Received", status=status.HTTP_201_CREATED)
+		# serializer = VideoStreamSerializer(data=request.data)
 
 		
-		if serializer.is_valid():
-			serializer.save()
+		# if serializer.is_valid():
+		# 	serializer.save()
 
-			#console.log(score)
-			requ = imageClassify(serializer)
-			#requ = json.dumps(requ)
+		# 	#console.log(score)
+		# 	requ = videoClassify(serializer)
+		# 	#requ = json.dumps(requ)
 
-			img_name = serializer.data['id']
-			snippet = VideoStream.objects.get(id= img_name)
-			# comment below line to store the posted imageClassify 
-			snippet.delete()
-			return Response(requ, status=status.HTTP_201_CREATED)
-		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		# 	img_name = serializer.data['id']
+		# 	snippet = VideoStream.objects.get(id= img_name)
+		# 	# comment below line to store the posted imageClassify 
+		# 	snippet.delete()
+		return Response(requ, status=status.HTTP_201_CREATED)
+		# return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
